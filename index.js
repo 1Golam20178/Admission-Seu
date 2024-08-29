@@ -1,3 +1,29 @@
+// page loding
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Show the loading overlay
+    var loadingOverlay = document.getElementById('loading-overlay');
+    var content = document.getElementById('content');
+
+    // Simulate loading delay (2 seconds)
+    setTimeout(function() {
+        // Hide the loading overlay
+        loadingOverlay.style.opacity = '0';
+
+        // Wait for transition to complete before hiding the overlay
+        setTimeout(function() {
+            loadingOverlay.style.display = 'none';
+            content.style.display = 'flex';
+        }, 500); // Match the CSS transition duration
+    }, 8000); // 1 seconds delay
+});
+
+
+
+
+
+
+
 // Toggle the visibility of the menu and change the menu icon
 document.getElementById('menuButton').addEventListener('click', function () {
     let menu = document.getElementById('menu');
@@ -104,7 +130,7 @@ flatpickr("#dob", {
 function nextSection() {
     const currentSection = Array.from(document.querySelectorAll('.section')).find(section => !section.classList.contains('hidden'));
     const next = currentSection.nextElementSibling;
-    if (next && next.classList.contains('section')&&   validation()) {
+    if (next && next.classList.contains('section')&&  validation()) {
         currentSection.style.opacity = 0;
         currentSection.style.transform = 'translateX(-100%)';
         currentSection.addEventListener('transitionend', function() {
@@ -309,6 +335,14 @@ function validateCurrentSection() {
     let isValid = true;
 
     if (formId === 'secondaryEducationForm') {
+        document.getElementById('rollNumberSSC').addEventListener('input', function() {
+            validateField(this, 'Roll Number', document.getElementById('rollNumber1Error'));
+        });
+
+        document.getElementById('registrationNumberSSC').addEventListener('input', function() {
+            validateField(this, 'Registration Number', document.getElementById('registrationNumber1Error'));
+        });
+
         // SSC Fields
         const rollNumberSSC = document.getElementById('rollNumberSSC');
         const rollNumberSSCError = document.getElementById('rollNumber1Error');
@@ -340,7 +374,7 @@ function validateCurrentSection() {
         isValid &= validateInputField(boardHSC, boardError, 'Board');
     }
 
-    //3rd page validation
+     //3rd page validation
 
   if(formId=='personalInfoForm')
   {
@@ -354,9 +388,9 @@ function validateCurrentSection() {
       const EmailError = document.getElementById('emailError');
       const PmobileNumberInput = document.getElementById('mobileNumber-p');
       const PmobileNumberError = document.getElementById('mobileNumberError-p');
-      isValid &= validateInputField(PmobileNumberInput,PmobileNumberError, 'Mobile Number');
 
-//father into
+
+     //father into
 
       const fatherNameInput = document.getElementById('fatherName');
       const fatherNameError = document.getElementById('fatherNameError');
@@ -369,6 +403,7 @@ function validateCurrentSection() {
       const NidF= document.getElementById('nid-f');
       const NidFError = document.getElementById('nid-f-Error');
 
+      isValid &= validateInputField(PmobileNumberInput,PmobileNumberError, 'Mobile Number');
       isValid &= validateInputField(NidF,NidFError, 'Nid');
       isValid &= validateInputField(fatherNameInput, fatherNameError, 'Father Name');
       isValid &= validateInputField(occupationInput, occupationError, 'Occupation');
@@ -394,9 +429,6 @@ function validateCurrentSection() {
       isValid &= validateInputField(MoccupationInput, MoccupationError, 'Mother Occupation');
       isValid &= validateInputField(MdesignationInput, MdesignationError, 'Mother Occupation');
       isValid &= validateInputField(motherNameInput,motherNameError, 'Nid');
-
-
-
       isValid &= validateInputField(Email,EmailError, 'Email');
 
       // Validate all fields
@@ -431,6 +463,40 @@ function validateCurrentSection() {
       }
 
   }
+
+    if(formId=='addressForm'){
+
+        const streetname = document.getElementById('presentStreetAddress' )
+        const streetnameError = document.getElementById('streetnameError');
+        const presentSubDistrict = document.getElementById('presentSubDistrict' )
+        const presentSubDistrictError = document.getElementById('presentSubDistrictError');
+        const presentPostCode = document.getElementById('presentPostCode' )
+        const presentPostCodeError = document.getElementById('presentPostCodeError');
+        const district = document.getElementById('district-pr' )
+        const districtError = document.getElementById('districtError');
+        const presentPoliceStation = document.getElementById('presentPoliceStation' )
+        const presentPoliceStationError = document.getElementById('presentPoliceStationError');
+        const presentPostOffice = document.getElementById('presentPostOffice' )
+        const presentPostOfficeError = document.getElementById('presentPostOfficeError');
+        const Division2 = document.getElementById('presentDivision' )
+        const DivisionError2 = document.getElementById('DivisionError');
+
+
+
+
+
+
+        isValid &= validateInputField(streetname,streetnameError, 'StreetName');
+        isValid &= validateInputField(Division2,DivisionError2, 'Division');
+        isValid &= validateInputField(district,districtError, 'District');
+        isValid &= validateInputField(presentSubDistrict,presentSubDistrictError, 'StreetName');
+        isValid &= validateInputField(presentPostCode,presentPostCodeError, 'PostCode');
+        isValid &= validateInputField(presentPostOffice,presentPostOfficeError, 'PostOffice');
+        isValid &= validateInputField(presentPoliceStation,presentPoliceStationError, 'PoliceStation');
+
+
+
+    }
 
     return isValid;
 }
@@ -467,5 +533,51 @@ document.querySelectorAll('input').forEach(input => {
         validateInputField(input, errorElement, fieldName);
     });
 });
+
+
+//Preesent Adress same as PArmanent Ddress
+
+function copyAddress() {
+    // Get the checkbox
+    var checkbox = document.getElementById("sameAddress");
+
+    // Get the Present Address fields
+    var presentStreetAddress = document.getElementById("presentStreetAddress").value;
+    var presentDivision = document.getElementById("presentDivision").value;
+    var presentDistrict = document.getElementById("district-pr").value;
+    var presentSubDistrict = document.getElementById("presentSubDistrict").value;
+    var presentPoliceStation = document.getElementById("presentPoliceStation").value;
+    var presentPostOffice = document.getElementById("presentPostOffice").value;
+    var presentPostCode = document.getElementById("presentPostCode").value;
+
+    // Get the Permanent Address fields
+    var permanentStreetAddress = document.getElementById("permanentStreetAddress");
+    var permanentDivision = document.getElementById("permanentDivision");
+    var permanentDistrict = document.getElementById("district-per");
+    var permanentSubDistrict = document.getElementById("permanentSubDistrict");
+    var permanentPoliceStation = document.getElementById("permanentPoliceStation");
+    var permanentPostOffice = document.getElementById("permanentPostOffice");
+    var permanentPostCode = document.getElementById("permanentPostCode");
+
+    // If the checkbox is checked, copy the values
+    if (checkbox.checked) {
+        permanentStreetAddress.value = presentStreetAddress;
+        permanentDivision.value = presentDivision;
+        permanentDistrict.value = presentDistrict;
+        permanentSubDistrict.value = presentSubDistrict;
+        permanentPoliceStation.value = presentPoliceStation;
+        permanentPostOffice.value = presentPostOffice;
+        permanentPostCode.value = presentPostCode;
+    } else {
+        // Clear the Permanent Address fields if checkbox is unchecked
+        permanentStreetAddress.value = "";
+        permanentDivision.value = "";
+        permanentDistrict.value = "";
+        permanentSubDistrict.value = "";
+        permanentPoliceStation.value = "";
+        permanentPostOffice.value = "";
+        permanentPostCode.value = "";
+    }
+}
 
 
